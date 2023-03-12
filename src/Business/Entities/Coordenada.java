@@ -1,6 +1,6 @@
-package BL.Entities;
+package Business.Entities;
 
-public class Coordenada {
+public class Coordenada implements ICoordenada {
     private int eaCapacidadBelica;
     private String eaGeolocalizacion;
     private String eaDetalleArsenal;
@@ -64,5 +64,11 @@ public class Coordenada {
 
     public String eaGetFechaIngreso() {
         return eaFechaIngreso;
+    }
+
+    @Override
+    public boolean eaValidarCoordenada() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'eaValidarCoordenada'");
     } 
 }
