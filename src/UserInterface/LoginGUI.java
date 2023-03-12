@@ -79,7 +79,8 @@ public class LoginGUI extends JFrame implements ActionListener {
         if(eaLogueoValido) {
             JOptionPane.showMessageDialog(null,"Ingreso Valido...!");
             this.dispose();
-            eaCoordenadaGUI.eaSetVisible();
+            eaCoordenadaGUI.setVisible(true);
+            eaCoordenadaGUI.eaLlenarTabla();
         } else {
             eaIntentos--;
             JOptionPane.showMessageDialog(null,"Usuario o clave incorrectos\n" + "Intentos restantes: " + eaIntentos,null,JOptionPane.ERROR_MESSAGE);

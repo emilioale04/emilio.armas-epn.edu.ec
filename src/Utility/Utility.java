@@ -29,21 +29,19 @@ public class Utility {
         return eaLstOrdenada;
     }
 
-    public static List<Coordenada> eaGetLstCoordenadaOrdenada(List<Coordenada> eaLstCoo) {
-        Set<Coordenada> eaSetCoo = new HashSet<Coordenada>();
-        List<Coordenada> eaLstOrdenada = new ArrayList<Coordenada>();
-        Iterator<Coordenada> eaIt;
-        
-        for (Coordenada eaC : eaLstCoo) {
-            eaSetCoo.add(eaC);
+    public static String eaGetLstString(int[] eaLstInt) {
+        String eaS = "";
+        for (int i = 0; i < eaLstInt.length; i++) {
+            eaS += Integer.toString(eaLstInt[i]) + " ";
         }
-        // eaSetCoo.
+        return eaS;
+    }
 
-        eaIt = eaSetCoo.iterator();
-
-        while(eaIt.hasNext()){
-            eaLstOrdenada.add(eaIt.next());
+    public static int eaGetSumaLstInt(int[] eaLstInt) {
+        int eaSuma = 0;
+        for (int i = 0; i < eaLstInt.length; i++) {
+            eaSuma += eaLstInt[i];
         }
-        return eaLstOrdenada;
+        return eaSuma;
     }
 }

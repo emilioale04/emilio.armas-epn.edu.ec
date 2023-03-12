@@ -6,8 +6,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JTable;
-import javax.swing.plaf.metal.MetalBorders.ScrollPaneBorder;
-import javax.swing.table.DefaultTableModel;
 
 import Business.CoordenadaBL;
 import Business.Entities.Coordenada;
@@ -18,13 +16,16 @@ import java.awt.event.*;
 
 public class CoordenadaGUI extends JFrame implements ActionListener{
     
-    JPanel eaPanel = new JPanel();
+    static JPanel eaPanel = new JPanel();
     static JProgressBar eaProgressBar = new JProgressBar();
     static JTable eaTablaCoordenadas = new JTable();
     JLabel eaLabelLeyendo = new JLabel();
     JButton eaBtnSiguiente = new JButton();
+    JButton eaBtnLlenar = new JButton();
 
     CustomTableModel eaModeloTabla = new CustomTableModel();
+
+    InformacionGUI eaInformacionGUI = new InformacionGUI();
     
 
     public CoordenadaGUI() {
@@ -62,20 +63,13 @@ public class CoordenadaGUI extends JFrame implements ActionListener{
         eaBtnSiguiente.setBounds(170, 320, 100, 25);
         
         add(eaPanel);
-        
+                
         eaPanel.add(eaProgressBar);
         eaPanel.add(eaTablaCoordenadas);
         eaPanel.add(eaBtnSiguiente);
     }
 
-    protected void eaSetVisible() {
-        //eaInicializar();
-        setVisible(true);
-        eaLlenarTabla();
-        eaBtnSiguiente.addActionListener(this);
-    }
-
-    protected void eaLlenarTabla() {
+    public void eaLlenarTabla() {
         try {
             CoordenadaBL eaCoordenadaBL = new CoordenadaBL();
 
@@ -91,14 +85,16 @@ public class CoordenadaGUI extends JFrame implements ActionListener{
         } catch (AppException b) {
             b.printStackTrace();
         }
+        eaBtnSiguiente.addActionListener(this);
     }
 
-    private static void eaProgressBar() {
+    public static void eaProgressBar() {
         eaProgressBar.setValue(0);
         try {
             for (int i = 1; i <= 100; i++) {
                 eaProgressBar.setValue(i);
                 Thread.sleep(5);
+                eaPanel.updateUI();
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -107,7 +103,7 @@ public class CoordenadaGUI extends JFrame implements ActionListener{
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'actionPerformed'");
+        this.dispose();
+        eaInformacionGUI.setVisible(true);
     }
 }
