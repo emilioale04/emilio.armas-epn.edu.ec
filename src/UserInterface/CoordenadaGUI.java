@@ -1,5 +1,6 @@
 package UserInterface;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -10,8 +11,8 @@ import javax.swing.table.DefaultTableModel;
 
 import Business.CoordenadaBL;
 import Business.Entities.Coordenada;
-import Framework.AppConfiguration;
 import Framework.AppException;
+import UserInterface.CustomUI.CustomTableModel;
 
 import java.awt.event.*;
 
@@ -21,16 +22,21 @@ public class CoordenadaGUI extends JFrame implements ActionListener{
     static JProgressBar eaProgressBar = new JProgressBar();
     static JTable eaTablaCoordenadas = new JTable();
     JLabel eaLabelLeyendo = new JLabel();
+    JButton eaBtnSiguiente = new JButton();
 
-    DefaultTableModel eaModeloTabla = new DefaultTableModel();
+    CustomTableModel eaModeloTabla = new CustomTableModel();
     
 
     public CoordenadaGUI() {
+        eaInicializar();
+    }
+
+    private void eaInicializar() {
         setTitle("COORDENADAS");
-        setSize(500,400);
+        setSize(470,450);
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setVisible(true);
+        setVisible(false);
         setLocationRelativeTo(null);
         
         eaPanel.setLayout(null);
@@ -51,16 +57,39 @@ public class CoordenadaGUI extends JFrame implements ActionListener{
         eaModeloTabla.addColumn("Capacidad Belica");
         eaModeloTabla.addColumn("Geolocalizacion");
         eaModeloTabla.addColumn("Tipo Arsenal");
+
+        eaBtnSiguiente.setText("Siguiente");
+        eaBtnSiguiente.setBounds(170, 320, 100, 25);
         
         add(eaPanel);
         
         eaPanel.add(eaProgressBar);
         eaPanel.add(eaTablaCoordenadas);
+        eaPanel.add(eaBtnSiguiente);
+    }
 
+    protected void eaSetVisible() {
+        //eaInicializar();
+        setVisible(true);
+        eaLlenarTabla();
+        eaBtnSiguiente.addActionListener(this);
+    }
+
+    protected void eaLlenarTabla() {
         try {
-            eaCargarCoordenadas();
-        } catch (AppException e) {
-            e.printStackTrace();
+            CoordenadaBL eaCoordenadaBL = new CoordenadaBL();
+
+            for (Coordenada eaC : eaCoordenadaBL.eaGetAllCoordenada()) {
+                eaProgressBar();
+                Object[] eaFila = new Object[3];
+                eaFila[0] = eaC.eaGetCapacidadBelica();
+                eaFila[1] = eaC.eaGetGeolocalizacion();
+                eaFila[2] = eaC.eaGetDetalleArsenal();
+                eaModeloTabla.addRow(eaFila);
+            }
+
+        } catch (AppException b) {
+            b.printStackTrace();
         }
     }
 
@@ -69,40 +98,16 @@ public class CoordenadaGUI extends JFrame implements ActionListener{
         try {
             for (int i = 1; i <= 100; i++) {
                 eaProgressBar.setValue(i);
-                Thread.sleep(10);
+                Thread.sleep(5);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
-
-    private void eaLlenarTabla() {
-        eaTablaCoordenadas = new JTable(null, new String[]{"Capacidad Belica, Geolocalizacion, Tipo de Arsenal"});
-    }
-
-    private void eaCargarCoordenadas() throws AppException {
-        CoordenadaBL eaCoordenadaBL = new CoordenadaBL();
-
-        for (Coordenada eaC : eaCoordenadaBL.eaGetAllCoordenada()) {
-            eaProgressBar();
-            Object[] eaFila = new Object[3];
-            eaFila[0] = eaC.eaGetCapacidadBelica();
-            eaFila[1] = eaC.eaGetGeolocalizacion();
-            eaFila[2] = eaC.eaGetDetalleArsenal();
-            eaModeloTabla.addRow(eaFila);
-        }
-    }
-
     
     @Override
     public void actionPerformed(ActionEvent e) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'actionPerformed'");
     }
-
-    public static void main(String[] args) {
-        AppConfiguration.eaLoad("src/config.properties");
-        new CoordenadaGUI();
-    }
-    
 }

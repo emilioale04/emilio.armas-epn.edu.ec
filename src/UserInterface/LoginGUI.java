@@ -24,11 +24,14 @@ public class LoginGUI extends JFrame implements ActionListener {
     private String eaUsuario;
     private String eaClave;
 
+    private int eaIntentos;
+
     private boolean eaLogueoValido = false;
 
     public LoginGUI() {
         eaUsuario = "";
         eaClave = "";
+        eaIntentos = 3;
         setTitle("LOGIN");
         setSize(300,200);
         setResizable(false);
@@ -72,13 +75,16 @@ public class LoginGUI extends JFrame implements ActionListener {
         } catch (AppException e1) {
             e1.printStackTrace();
         }
-
+        
         if(eaLogueoValido) {
             JOptionPane.showMessageDialog(null,"Ingreso Valido...!");
             this.dispose();
-            eaCoordenadaGUI.setVisible(true);
-        }else {
-            JOptionPane.showMessageDialog(null,"Usuario o clave incorrectos",null,JOptionPane.ERROR_MESSAGE);
+            eaCoordenadaGUI.eaSetVisible();
+        } else {
+            eaIntentos--;
+            JOptionPane.showMessageDialog(null,"Usuario o clave incorrectos\n" + "Intentos restantes: " + eaIntentos,null,JOptionPane.ERROR_MESSAGE);
         }
+
+        if(eaIntentos == 0) System.exit(1);
     }
 }

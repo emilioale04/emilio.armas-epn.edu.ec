@@ -45,4 +45,21 @@ public class CoordenadaBL {
 
         return eaLstCapacidadBelica;
     }
+
+    public List<Coordenada> eaGetCoordenadaNoRepetida() throws AppException{
+        
+        try {
+            CoordenadaDAC eaCoordenadaDAC = new CoordenadaDAC();  
+            List<Coordenada> eaLstCoordenada = new ArrayList<Coordenada>();
+            ResultSet eaRs = eaCoordenadaDAC.eaGetAllCoordenada();
+            while(eaRs.next())    {
+                Coordenada eaC = new Coordenada(eaRs.getInt("EA_CAPACIDAD_BELICA"), eaRs.getString("EA_GEOLOCALIZACION"), eaRs.getString("EA_TIPO_ARSENAL"), eaRs.getString("EA_FECHA_INGRESO"));
+                eaLstCoordenada.add(eaC);
+            }
+            return eaLstCoordenada;
+        } 
+        catch (SQLException e) {
+            throw new AppException(e, getClass());
+        }
+    }
 }

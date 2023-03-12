@@ -22,6 +22,16 @@ public class CoordenadaDAC extends SQLiteDataHelper {
         }
     }
 
+    public ResultSet eaGetCoordenadaNoRepetida() throws AppException{
+        try {
+            String eaSql = "SELECT * FROM EA_COORDENADA WHERE EA_CAPACIDAD_BELICA = 1";
+            return getResultSet(eaSql);
+        } 
+        catch (SQLException e) {
+            throw new AppException(e, getClass(), "eaGetAllCoordenada()");
+        }
+    }
+
     public ResultSet eaGetAllCapacidadBelica() throws AppException{
         try {
             String eaSql = "SELECT EA_CAPACIDAD_BELICA FROM EA_COORDENADA";
